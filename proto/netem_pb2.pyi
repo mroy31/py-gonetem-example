@@ -125,6 +125,81 @@ class CaptureSrvMsg(_message.Message):
     data: bytes
     def __init__(self, code: _Optional[_Union[CaptureSrvMsg.Code, str]] = ..., data: _Optional[bytes] = ...) -> None: ...
 
+class TopologyRunMsg(_message.Message):
+    __slots__ = ("code", "total", "nodeMessages")
+    class Code(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = ()
+        NODE_COUNT: _ClassVar[TopologyRunMsg.Code]
+        BRIDGE_COUNT: _ClassVar[TopologyRunMsg.Code]
+        LINK_COUNT: _ClassVar[TopologyRunMsg.Code]
+        NODE_START: _ClassVar[TopologyRunMsg.Code]
+        LINK_SETUP: _ClassVar[TopologyRunMsg.Code]
+        BRIDGE_START: _ClassVar[TopologyRunMsg.Code]
+        NODE_LOADCONFIG: _ClassVar[TopologyRunMsg.Code]
+        NODE_MESSAGES: _ClassVar[TopologyRunMsg.Code]
+        NODE_STOP: _ClassVar[TopologyRunMsg.Code]
+        NODE_RM: _ClassVar[TopologyRunMsg.Code]
+    NODE_COUNT: TopologyRunMsg.Code
+    BRIDGE_COUNT: TopologyRunMsg.Code
+    LINK_COUNT: TopologyRunMsg.Code
+    NODE_START: TopologyRunMsg.Code
+    LINK_SETUP: TopologyRunMsg.Code
+    BRIDGE_START: TopologyRunMsg.Code
+    NODE_LOADCONFIG: TopologyRunMsg.Code
+    NODE_MESSAGES: TopologyRunMsg.Code
+    NODE_STOP: TopologyRunMsg.Code
+    NODE_RM: TopologyRunMsg.Code
+    class NodeMessages(_message.Message):
+        __slots__ = ("name", "messages")
+        NAME_FIELD_NUMBER: _ClassVar[int]
+        MESSAGES_FIELD_NUMBER: _ClassVar[int]
+        name: str
+        messages: _containers.RepeatedScalarFieldContainer[str]
+        def __init__(self, name: _Optional[str] = ..., messages: _Optional[_Iterable[str]] = ...) -> None: ...
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
+    NODEMESSAGES_FIELD_NUMBER: _ClassVar[int]
+    code: TopologyRunMsg.Code
+    total: int
+    nodeMessages: _containers.RepeatedCompositeFieldContainer[TopologyRunMsg.NodeMessages]
+    def __init__(self, code: _Optional[_Union[TopologyRunMsg.Code, str]] = ..., total: _Optional[int] = ..., nodeMessages: _Optional[_Iterable[_Union[TopologyRunMsg.NodeMessages, _Mapping]]] = ...) -> None: ...
+
+class ProjectSaveMsg(_message.Message):
+    __slots__ = ("code", "data", "total")
+    class Code(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = ()
+        NODE_COUNT: _ClassVar[ProjectSaveMsg.Code]
+        NODE_SAVE: _ClassVar[ProjectSaveMsg.Code]
+        DATA: _ClassVar[ProjectSaveMsg.Code]
+    NODE_COUNT: ProjectSaveMsg.Code
+    NODE_SAVE: ProjectSaveMsg.Code
+    DATA: ProjectSaveMsg.Code
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
+    code: ProjectSaveMsg.Code
+    data: bytes
+    total: int
+    def __init__(self, code: _Optional[_Union[ProjectSaveMsg.Code, str]] = ..., data: _Optional[bytes] = ..., total: _Optional[int] = ...) -> None: ...
+
+class ProjectCloseMsg(_message.Message):
+    __slots__ = ("code", "total")
+    class Code(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = ()
+        NODE_COUNT: _ClassVar[ProjectCloseMsg.Code]
+        BRIDGE_COUNT: _ClassVar[ProjectCloseMsg.Code]
+        NODE_CLOSE: _ClassVar[ProjectCloseMsg.Code]
+        BRIDGE_CLOSE: _ClassVar[ProjectCloseMsg.Code]
+    NODE_COUNT: ProjectCloseMsg.Code
+    BRIDGE_COUNT: ProjectCloseMsg.Code
+    NODE_CLOSE: ProjectCloseMsg.Code
+    BRIDGE_CLOSE: ProjectCloseMsg.Code
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
+    code: ProjectCloseMsg.Code
+    total: int
+    def __init__(self, code: _Optional[_Union[ProjectCloseMsg.Code, str]] = ..., total: _Optional[int] = ...) -> None: ...
+
 class LinkConfig(_message.Message):
     __slots__ = ("peer1", "peer2", "loss", "delay", "jitter")
     PEER1_FIELD_NUMBER: _ClassVar[int]
@@ -212,21 +287,6 @@ class AckResponse(_message.Message):
     STATUS_FIELD_NUMBER: _ClassVar[int]
     status: Status
     def __init__(self, status: _Optional[_Union[Status, _Mapping]] = ...) -> None: ...
-
-class RunResponse(_message.Message):
-    __slots__ = ("status", "nodeMessages")
-    class NodeMessages(_message.Message):
-        __slots__ = ("name", "messages")
-        NAME_FIELD_NUMBER: _ClassVar[int]
-        MESSAGES_FIELD_NUMBER: _ClassVar[int]
-        name: str
-        messages: _containers.RepeatedScalarFieldContainer[str]
-        def __init__(self, name: _Optional[str] = ..., messages: _Optional[_Iterable[str]] = ...) -> None: ...
-    STATUS_FIELD_NUMBER: _ClassVar[int]
-    NODEMESSAGES_FIELD_NUMBER: _ClassVar[int]
-    status: Status
-    nodeMessages: _containers.RepeatedCompositeFieldContainer[RunResponse.NodeMessages]
-    def __init__(self, status: _Optional[_Union[Status, _Mapping]] = ..., nodeMessages: _Optional[_Iterable[_Union[RunResponse.NodeMessages, _Mapping]]] = ...) -> None: ...
 
 class FileResponse(_message.Message):
     __slots__ = ("status", "data")

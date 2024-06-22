@@ -15,48 +15,48 @@ class NetemStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetVersion = channel.unary_unary(
-                '/netem.Netem/GetVersion',
+        self.ServerGetVersion = channel.unary_unary(
+                '/netem.Netem/ServerGetVersion',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.VersionResponse.FromString,
                 )
-        self.PullImages = channel.unary_stream(
-                '/netem.Netem/PullImages',
+        self.ServerPullImages = channel.unary_stream(
+                '/netem.Netem/ServerPullImages',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.PullSrvMsg.FromString,
                 )
-        self.Clean = channel.unary_unary(
-                '/netem.Netem/Clean',
+        self.ServerCleanContainers = channel.unary_unary(
+                '/netem.Netem/ServerCleanContainers',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.GetProjects = channel.unary_unary(
-                '/netem.Netem/GetProjects',
+        self.ProjectGetMany = channel.unary_unary(
+                '/netem.Netem/ProjectGetMany',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.PrjListResponse.FromString,
                 )
-        self.OpenProject = channel.unary_unary(
-                '/netem.Netem/OpenProject',
+        self.ProjectOpen = channel.unary_unary(
+                '/netem.Netem/ProjectOpen',
                 request_serializer=proto_dot_netem__pb2.OpenRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.PrjOpenResponse.FromString,
                 )
-        self.CloseProject = channel.unary_unary(
-                '/netem.Netem/CloseProject',
+        self.ProjectClose = channel.unary_stream(
+                '/netem.Netem/ProjectClose',
                 request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-                response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
+                response_deserializer=proto_dot_netem__pb2.ProjectCloseMsg.FromString,
                 )
-        self.SaveProject = channel.unary_unary(
-                '/netem.Netem/SaveProject',
+        self.ProjectSave = channel.unary_stream(
+                '/netem.Netem/ProjectSave',
+                request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
+                response_deserializer=proto_dot_netem__pb2.ProjectSaveMsg.FromString,
+                )
+        self.ProjectGetNodeConfigs = channel.unary_unary(
+                '/netem.Netem/ProjectGetNodeConfigs',
                 request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.FileResponse.FromString,
                 )
-        self.GetProjectConfigs = channel.unary_unary(
-                '/netem.Netem/GetProjectConfigs',
-                request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-                response_deserializer=proto_dot_netem__pb2.FileResponse.FromString,
-                )
-        self.GetProjectStatus = channel.unary_unary(
-                '/netem.Netem/GetProjectStatus',
+        self.ProjectGetStatus = channel.unary_unary(
+                '/netem.Netem/ProjectGetStatus',
                 request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.StatusResponse.FromString,
                 )
@@ -70,68 +70,78 @@ class NetemStub(object):
                 request_serializer=proto_dot_netem__pb2.WNetworkRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.Check = channel.unary_unary(
-                '/netem.Netem/Check',
+        self.TopologyCheck = channel.unary_unary(
+                '/netem.Netem/TopologyCheck',
                 request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.Reload = channel.unary_unary(
-                '/netem.Netem/Reload',
+        self.TopologyReload = channel.unary_stream(
+                '/netem.Netem/TopologyReload',
                 request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-                response_deserializer=proto_dot_netem__pb2.RunResponse.FromString,
+                response_deserializer=proto_dot_netem__pb2.TopologyRunMsg.FromString,
                 )
-        self.Run = channel.unary_unary(
-                '/netem.Netem/Run',
+        self.TopologyRun = channel.unary_stream(
+                '/netem.Netem/TopologyRun',
                 request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-                response_deserializer=proto_dot_netem__pb2.RunResponse.FromString,
+                response_deserializer=proto_dot_netem__pb2.TopologyRunMsg.FromString,
                 )
-        self.ReadConfigFiles = channel.unary_unary(
-                '/netem.Netem/ReadConfigFiles',
+        self.TopologyStartAll = channel.unary_unary(
+                '/netem.Netem/TopologyStartAll',
+                request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
+                response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
+                )
+        self.TopologyStopAll = channel.unary_unary(
+                '/netem.Netem/TopologyStopAll',
+                request_serializer=proto_dot_netem__pb2.ProjectRequest.SerializeToString,
+                response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
+                )
+        self.NodeReadConfigFiles = channel.unary_unary(
+                '/netem.Netem/NodeReadConfigFiles',
                 request_serializer=proto_dot_netem__pb2.NodeRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.ConfigFilesResponse.FromString,
                 )
-        self.CanRunConsole = channel.unary_unary(
-                '/netem.Netem/CanRunConsole',
+        self.NodeCanRunConsole = channel.unary_unary(
+                '/netem.Netem/NodeCanRunConsole',
                 request_serializer=proto_dot_netem__pb2.NodeRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.Console = channel.stream_stream(
-                '/netem.Netem/Console',
+        self.NodeConsole = channel.stream_stream(
+                '/netem.Netem/NodeConsole',
                 request_serializer=proto_dot_netem__pb2.ConsoleCltMsg.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.ConsoleSrvMsg.FromString,
                 )
-        self.Start = channel.unary_unary(
-                '/netem.Netem/Start',
+        self.NodeStart = channel.unary_unary(
+                '/netem.Netem/NodeStart',
                 request_serializer=proto_dot_netem__pb2.NodeRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.Stop = channel.unary_unary(
-                '/netem.Netem/Stop',
+        self.NodeStop = channel.unary_unary(
+                '/netem.Netem/NodeStop',
                 request_serializer=proto_dot_netem__pb2.NodeRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.Restart = channel.unary_unary(
-                '/netem.Netem/Restart',
+        self.NodeRestart = channel.unary_unary(
+                '/netem.Netem/NodeRestart',
                 request_serializer=proto_dot_netem__pb2.NodeRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.SetIfState = channel.unary_unary(
-                '/netem.Netem/SetIfState',
+        self.NodeSetIfState = channel.unary_unary(
+                '/netem.Netem/NodeSetIfState',
                 request_serializer=proto_dot_netem__pb2.NodeIfStateRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
-        self.Capture = channel.unary_stream(
-                '/netem.Netem/Capture',
+        self.NodeCapture = channel.unary_stream(
+                '/netem.Netem/NodeCapture',
                 request_serializer=proto_dot_netem__pb2.NodeInterfaceRequest.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.CaptureSrvMsg.FromString,
                 )
-        self.CopyFrom = channel.unary_stream(
-                '/netem.Netem/CopyFrom',
+        self.NodeCopyFrom = channel.unary_stream(
+                '/netem.Netem/NodeCopyFrom',
                 request_serializer=proto_dot_netem__pb2.CopyMsg.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.CopyMsg.FromString,
                 )
-        self.CopyTo = channel.stream_unary(
-                '/netem.Netem/CopyTo',
+        self.NodeCopyTo = channel.stream_unary(
+                '/netem.Netem/NodeCopyTo',
                 request_serializer=proto_dot_netem__pb2.CopyMsg.SerializeToString,
                 response_deserializer=proto_dot_netem__pb2.AckResponse.FromString,
                 )
@@ -145,57 +155,57 @@ class NetemStub(object):
 class NetemServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetVersion(self, request, context):
-        """general action
+    def ServerGetVersion(self, request, context):
+        """Server actions
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def PullImages(self, request, context):
+    def ServerPullImages(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Clean(self, request, context):
+    def ServerCleanContainers(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetProjects(self, request, context):
+    def ProjectGetMany(self, request, context):
         """Project actions
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def OpenProject(self, request, context):
+    def ProjectOpen(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CloseProject(self, request, context):
+    def ProjectClose(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SaveProject(self, request, context):
+    def ProjectSave(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetProjectConfigs(self, request, context):
+    def ProjectGetNodeConfigs(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetProjectStatus(self, request, context):
+    def ProjectGetStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -214,81 +224,93 @@ class NetemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Check(self, request, context):
+    def TopologyCheck(self, request, context):
         """topology actions
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Reload(self, request, context):
+    def TopologyReload(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Run(self, request, context):
+    def TopologyRun(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ReadConfigFiles(self, request, context):
+    def TopologyStartAll(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def TopologyStopAll(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def NodeReadConfigFiles(self, request, context):
         """Node actions
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CanRunConsole(self, request, context):
+    def NodeCanRunConsole(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Console(self, request_iterator, context):
+    def NodeConsole(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Start(self, request, context):
+    def NodeStart(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Stop(self, request, context):
+    def NodeStop(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Restart(self, request, context):
+    def NodeRestart(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SetIfState(self, request, context):
+    def NodeSetIfState(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Capture(self, request, context):
+    def NodeCapture(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CopyFrom(self, request, context):
+    def NodeCopyFrom(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CopyTo(self, request_iterator, context):
+    def NodeCopyTo(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -304,48 +326,48 @@ class NetemServicer(object):
 
 def add_NetemServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetVersion': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetVersion,
+            'ServerGetVersion': grpc.unary_unary_rpc_method_handler(
+                    servicer.ServerGetVersion,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=proto_dot_netem__pb2.VersionResponse.SerializeToString,
             ),
-            'PullImages': grpc.unary_stream_rpc_method_handler(
-                    servicer.PullImages,
+            'ServerPullImages': grpc.unary_stream_rpc_method_handler(
+                    servicer.ServerPullImages,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=proto_dot_netem__pb2.PullSrvMsg.SerializeToString,
             ),
-            'Clean': grpc.unary_unary_rpc_method_handler(
-                    servicer.Clean,
+            'ServerCleanContainers': grpc.unary_unary_rpc_method_handler(
+                    servicer.ServerCleanContainers,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'GetProjects': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetProjects,
+            'ProjectGetMany': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProjectGetMany,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=proto_dot_netem__pb2.PrjListResponse.SerializeToString,
             ),
-            'OpenProject': grpc.unary_unary_rpc_method_handler(
-                    servicer.OpenProject,
+            'ProjectOpen': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProjectOpen,
                     request_deserializer=proto_dot_netem__pb2.OpenRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.PrjOpenResponse.SerializeToString,
             ),
-            'CloseProject': grpc.unary_unary_rpc_method_handler(
-                    servicer.CloseProject,
+            'ProjectClose': grpc.unary_stream_rpc_method_handler(
+                    servicer.ProjectClose,
                     request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
-                    response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
+                    response_serializer=proto_dot_netem__pb2.ProjectCloseMsg.SerializeToString,
             ),
-            'SaveProject': grpc.unary_unary_rpc_method_handler(
-                    servicer.SaveProject,
+            'ProjectSave': grpc.unary_stream_rpc_method_handler(
+                    servicer.ProjectSave,
+                    request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
+                    response_serializer=proto_dot_netem__pb2.ProjectSaveMsg.SerializeToString,
+            ),
+            'ProjectGetNodeConfigs': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProjectGetNodeConfigs,
                     request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.FileResponse.SerializeToString,
             ),
-            'GetProjectConfigs': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetProjectConfigs,
-                    request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
-                    response_serializer=proto_dot_netem__pb2.FileResponse.SerializeToString,
-            ),
-            'GetProjectStatus': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetProjectStatus,
+            'ProjectGetStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProjectGetStatus,
                     request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.StatusResponse.SerializeToString,
             ),
@@ -359,68 +381,78 @@ def add_NetemServicer_to_server(servicer, server):
                     request_deserializer=proto_dot_netem__pb2.WNetworkRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'Check': grpc.unary_unary_rpc_method_handler(
-                    servicer.Check,
+            'TopologyCheck': grpc.unary_unary_rpc_method_handler(
+                    servicer.TopologyCheck,
                     request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'Reload': grpc.unary_unary_rpc_method_handler(
-                    servicer.Reload,
+            'TopologyReload': grpc.unary_stream_rpc_method_handler(
+                    servicer.TopologyReload,
                     request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
-                    response_serializer=proto_dot_netem__pb2.RunResponse.SerializeToString,
+                    response_serializer=proto_dot_netem__pb2.TopologyRunMsg.SerializeToString,
             ),
-            'Run': grpc.unary_unary_rpc_method_handler(
-                    servicer.Run,
+            'TopologyRun': grpc.unary_stream_rpc_method_handler(
+                    servicer.TopologyRun,
                     request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
-                    response_serializer=proto_dot_netem__pb2.RunResponse.SerializeToString,
+                    response_serializer=proto_dot_netem__pb2.TopologyRunMsg.SerializeToString,
             ),
-            'ReadConfigFiles': grpc.unary_unary_rpc_method_handler(
-                    servicer.ReadConfigFiles,
+            'TopologyStartAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.TopologyStartAll,
+                    request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
+                    response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
+            ),
+            'TopologyStopAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.TopologyStopAll,
+                    request_deserializer=proto_dot_netem__pb2.ProjectRequest.FromString,
+                    response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
+            ),
+            'NodeReadConfigFiles': grpc.unary_unary_rpc_method_handler(
+                    servicer.NodeReadConfigFiles,
                     request_deserializer=proto_dot_netem__pb2.NodeRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.ConfigFilesResponse.SerializeToString,
             ),
-            'CanRunConsole': grpc.unary_unary_rpc_method_handler(
-                    servicer.CanRunConsole,
+            'NodeCanRunConsole': grpc.unary_unary_rpc_method_handler(
+                    servicer.NodeCanRunConsole,
                     request_deserializer=proto_dot_netem__pb2.NodeRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'Console': grpc.stream_stream_rpc_method_handler(
-                    servicer.Console,
+            'NodeConsole': grpc.stream_stream_rpc_method_handler(
+                    servicer.NodeConsole,
                     request_deserializer=proto_dot_netem__pb2.ConsoleCltMsg.FromString,
                     response_serializer=proto_dot_netem__pb2.ConsoleSrvMsg.SerializeToString,
             ),
-            'Start': grpc.unary_unary_rpc_method_handler(
-                    servicer.Start,
+            'NodeStart': grpc.unary_unary_rpc_method_handler(
+                    servicer.NodeStart,
                     request_deserializer=proto_dot_netem__pb2.NodeRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'Stop': grpc.unary_unary_rpc_method_handler(
-                    servicer.Stop,
+            'NodeStop': grpc.unary_unary_rpc_method_handler(
+                    servicer.NodeStop,
                     request_deserializer=proto_dot_netem__pb2.NodeRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'Restart': grpc.unary_unary_rpc_method_handler(
-                    servicer.Restart,
+            'NodeRestart': grpc.unary_unary_rpc_method_handler(
+                    servicer.NodeRestart,
                     request_deserializer=proto_dot_netem__pb2.NodeRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'SetIfState': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetIfState,
+            'NodeSetIfState': grpc.unary_unary_rpc_method_handler(
+                    servicer.NodeSetIfState,
                     request_deserializer=proto_dot_netem__pb2.NodeIfStateRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
-            'Capture': grpc.unary_stream_rpc_method_handler(
-                    servicer.Capture,
+            'NodeCapture': grpc.unary_stream_rpc_method_handler(
+                    servicer.NodeCapture,
                     request_deserializer=proto_dot_netem__pb2.NodeInterfaceRequest.FromString,
                     response_serializer=proto_dot_netem__pb2.CaptureSrvMsg.SerializeToString,
             ),
-            'CopyFrom': grpc.unary_stream_rpc_method_handler(
-                    servicer.CopyFrom,
+            'NodeCopyFrom': grpc.unary_stream_rpc_method_handler(
+                    servicer.NodeCopyFrom,
                     request_deserializer=proto_dot_netem__pb2.CopyMsg.FromString,
                     response_serializer=proto_dot_netem__pb2.CopyMsg.SerializeToString,
             ),
-            'CopyTo': grpc.stream_unary_rpc_method_handler(
-                    servicer.CopyTo,
+            'NodeCopyTo': grpc.stream_unary_rpc_method_handler(
+                    servicer.NodeCopyTo,
                     request_deserializer=proto_dot_netem__pb2.CopyMsg.FromString,
                     response_serializer=proto_dot_netem__pb2.AckResponse.SerializeToString,
             ),
@@ -440,7 +472,7 @@ class Netem(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetVersion(request,
+    def ServerGetVersion(request,
             target,
             options=(),
             channel_credentials=None,
@@ -450,14 +482,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/GetVersion',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ServerGetVersion',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             proto_dot_netem__pb2.VersionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def PullImages(request,
+    def ServerPullImages(request,
             target,
             options=(),
             channel_credentials=None,
@@ -467,14 +499,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/netem.Netem/PullImages',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/ServerPullImages',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             proto_dot_netem__pb2.PullSrvMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Clean(request,
+    def ServerCleanContainers(request,
             target,
             options=(),
             channel_credentials=None,
@@ -484,14 +516,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Clean',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ServerCleanContainers',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetProjects(request,
+    def ProjectGetMany(request,
             target,
             options=(),
             channel_credentials=None,
@@ -501,14 +533,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/GetProjects',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ProjectGetMany',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             proto_dot_netem__pb2.PrjListResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def OpenProject(request,
+    def ProjectOpen(request,
             target,
             options=(),
             channel_credentials=None,
@@ -518,14 +550,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/OpenProject',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ProjectOpen',
             proto_dot_netem__pb2.OpenRequest.SerializeToString,
             proto_dot_netem__pb2.PrjOpenResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CloseProject(request,
+    def ProjectClose(request,
             target,
             options=(),
             channel_credentials=None,
@@ -535,14 +567,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/CloseProject',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/ProjectClose',
             proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-            proto_dot_netem__pb2.AckResponse.FromString,
+            proto_dot_netem__pb2.ProjectCloseMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SaveProject(request,
+    def ProjectSave(request,
             target,
             options=(),
             channel_credentials=None,
@@ -552,14 +584,31 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/SaveProject',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/ProjectSave',
+            proto_dot_netem__pb2.ProjectRequest.SerializeToString,
+            proto_dot_netem__pb2.ProjectSaveMsg.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ProjectGetNodeConfigs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ProjectGetNodeConfigs',
             proto_dot_netem__pb2.ProjectRequest.SerializeToString,
             proto_dot_netem__pb2.FileResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetProjectConfigs(request,
+    def ProjectGetStatus(request,
             target,
             options=(),
             channel_credentials=None,
@@ -569,24 +618,7 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/GetProjectConfigs',
-            proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-            proto_dot_netem__pb2.FileResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetProjectStatus(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/GetProjectStatus',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ProjectGetStatus',
             proto_dot_netem__pb2.ProjectRequest.SerializeToString,
             proto_dot_netem__pb2.StatusResponse.FromString,
             options, channel_credentials,
@@ -627,7 +659,7 @@ class Netem(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Check(request,
+    def TopologyCheck(request,
             target,
             options=(),
             channel_credentials=None,
@@ -637,14 +669,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Check',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/TopologyCheck',
             proto_dot_netem__pb2.ProjectRequest.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Reload(request,
+    def TopologyReload(request,
             target,
             options=(),
             channel_credentials=None,
@@ -654,14 +686,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Reload',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/TopologyReload',
             proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-            proto_dot_netem__pb2.RunResponse.FromString,
+            proto_dot_netem__pb2.TopologyRunMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Run(request,
+    def TopologyRun(request,
             target,
             options=(),
             channel_credentials=None,
@@ -671,14 +703,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Run',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/TopologyRun',
             proto_dot_netem__pb2.ProjectRequest.SerializeToString,
-            proto_dot_netem__pb2.RunResponse.FromString,
+            proto_dot_netem__pb2.TopologyRunMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def ReadConfigFiles(request,
+    def TopologyStartAll(request,
             target,
             options=(),
             channel_credentials=None,
@@ -688,14 +720,48 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/ReadConfigFiles',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/TopologyStartAll',
+            proto_dot_netem__pb2.ProjectRequest.SerializeToString,
+            proto_dot_netem__pb2.AckResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def TopologyStopAll(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/TopologyStopAll',
+            proto_dot_netem__pb2.ProjectRequest.SerializeToString,
+            proto_dot_netem__pb2.AckResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def NodeReadConfigFiles(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/NodeReadConfigFiles',
             proto_dot_netem__pb2.NodeRequest.SerializeToString,
             proto_dot_netem__pb2.ConfigFilesResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CanRunConsole(request,
+    def NodeCanRunConsole(request,
             target,
             options=(),
             channel_credentials=None,
@@ -705,14 +771,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/CanRunConsole',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/NodeCanRunConsole',
             proto_dot_netem__pb2.NodeRequest.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Console(request_iterator,
+    def NodeConsole(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -722,14 +788,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_stream(request_iterator, target, '/netem.Netem/Console',
+        return grpc.experimental.stream_stream(request_iterator, target, '/netem.Netem/NodeConsole',
             proto_dot_netem__pb2.ConsoleCltMsg.SerializeToString,
             proto_dot_netem__pb2.ConsoleSrvMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Start(request,
+    def NodeStart(request,
             target,
             options=(),
             channel_credentials=None,
@@ -739,14 +805,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Start',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/NodeStart',
             proto_dot_netem__pb2.NodeRequest.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Stop(request,
+    def NodeStop(request,
             target,
             options=(),
             channel_credentials=None,
@@ -756,14 +822,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Stop',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/NodeStop',
             proto_dot_netem__pb2.NodeRequest.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Restart(request,
+    def NodeRestart(request,
             target,
             options=(),
             channel_credentials=None,
@@ -773,14 +839,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/Restart',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/NodeRestart',
             proto_dot_netem__pb2.NodeRequest.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SetIfState(request,
+    def NodeSetIfState(request,
             target,
             options=(),
             channel_credentials=None,
@@ -790,14 +856,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/netem.Netem/SetIfState',
+        return grpc.experimental.unary_unary(request, target, '/netem.Netem/NodeSetIfState',
             proto_dot_netem__pb2.NodeIfStateRequest.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Capture(request,
+    def NodeCapture(request,
             target,
             options=(),
             channel_credentials=None,
@@ -807,14 +873,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/netem.Netem/Capture',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/NodeCapture',
             proto_dot_netem__pb2.NodeInterfaceRequest.SerializeToString,
             proto_dot_netem__pb2.CaptureSrvMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CopyFrom(request,
+    def NodeCopyFrom(request,
             target,
             options=(),
             channel_credentials=None,
@@ -824,14 +890,14 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/netem.Netem/CopyFrom',
+        return grpc.experimental.unary_stream(request, target, '/netem.Netem/NodeCopyFrom',
             proto_dot_netem__pb2.CopyMsg.SerializeToString,
             proto_dot_netem__pb2.CopyMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def CopyTo(request_iterator,
+    def NodeCopyTo(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -841,7 +907,7 @@ class Netem(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_unary(request_iterator, target, '/netem.Netem/CopyTo',
+        return grpc.experimental.stream_unary(request_iterator, target, '/netem.Netem/NodeCopyTo',
             proto_dot_netem__pb2.CopyMsg.SerializeToString,
             proto_dot_netem__pb2.AckResponse.FromString,
             options, channel_credentials,

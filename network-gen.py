@@ -56,7 +56,7 @@ def open_project(prj: str, client: netem_grpc.NetemStub) -> str:
         request.name = PRJ_OPEN_NAME
         request.data = fd.read()
 
-        res = client.OpenProject(request)
+        res = client.ProjectOpen(request)
         return res.id
 
 
@@ -88,7 +88,7 @@ def run_event(client: netem_grpc.NetemStub, prjId: str, step: int) -> None:
                 request.node = evt["node"]
 
                 try:
-                    client.Restart(request)
+                    client.NodeRestart(request)
                 except Exception as err:
                     logging.error(f"Unable to restart node {evt["node"]}: {err}")
 
@@ -124,8 +124,8 @@ if __name__ == "__main__":
         help="Server URI (default: localhost:10110)")
     parser.add_argument(
         "-e", "--end", type=int, dest="end",
-        metavar="SECONDS", default=60,
-        help="Duration in seconds of project launch (0 for infinity, 60 by default)")
+        metavar="SECONDS", default=30,
+        help="Duration in seconds of project launch (0 for infinity, 30 by default)")
     args = parser.parse_args()
 
     log_format = '%(levelname)s: %(message)s'
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     with grpc.insecure_channel(args.server) as channel:
         client = netem_grpc.NetemStub(channel)
         try:
-            version = client.GetVersion(empty_pb2.Empty()).version
+            version = client.ServerGetVersion(empty_pb2.Empty()).version
             logging.info(f"Connected to server version {version}")
         except Exception as ex:
             logging.error(f"Unable to connect to server {args.server}: {str(ex)}")
@@ -164,11 +164,36 @@ if __name__ == "__main__":
             request = netem_pb2.ProjectRequest()
             request.id = prjId
             try:
-                with yaspin(text="Project launch: Wait ..."):
-                    client.Run(request)
+                with yaspin(text="Project launch: Wait ...") as spinner:
+                    node_count, node_start, node_config = 0, 0, 0
+                    link_count, link_setup = 0, 0
+
+                    for msg in client.TopologyRun(request):
+                        if msg.code == netem_pb2.TopologyRunMsg.NODE_COUNT:
+                            node_count = msg.total
+                        if msg.code == netem_pb2.TopologyRunMsg.LINK_COUNT:
+                            link_count = msg.total
+                        if msg.code == netem_pb2.TopologyRunMsg.NODE_START:
+                            node_start += 1
+                            spinner.text = f"Node starting {node_start}/{node_count}"
+                            if node_start == node_count:
+                                spinner.write("> All nodes started")
+                        if msg.code == netem_pb2.TopologyRunMsg.LINK_SETUP:
+                            link_setup += 1
+                            spinner.text = f"Link setup {link_setup}/{link_count}"
+                            if link_setup == link_count:
+                                spinner.write("> All links setup")
+                        if msg.code == netem_pb2.TopologyRunMsg.NODE_LOADCONFIG:
+                            node_config += 1
+                            spinner.text = f"Node load config {node_config}/{node_count}"
+                            if node_config == node_count:
+                                spinner.write("> All node config loaded")
+
+
             except Exception as err:
                 logging.error(f"Unable to run the project: {err}")
-                client.CloseProject(request)
+                for msg in client.ProjectClose(request):
+                    pass
                 sys.exit(1)
             logging.info("The project is running")
             
@@ -179,7 +204,14 @@ if __name__ == "__main__":
                 step += 1
 
             logging.info("Close the project")
-            client.CloseProject(request)
+            with yaspin(text="Close the project: Wait ...") as spinner:
+                node_count, node_close = 0, 0
+                for msg in client.ProjectClose(request):
+                    if msg.code == netem_pb2.ProjectCloseMsg.NODE_COUNT:
+                        node_count = msg.total
+                    if msg.code == netem_pb2.ProjectCloseMsg.NODE_CLOSE:
+                        node_close += 1
+                        spinner.text = f"Node closing {node_close}/{node_count}"
 
             
 
